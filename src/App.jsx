@@ -11,6 +11,8 @@ import BookShoot from "./pages/user/BookShoot";
 import MyBookings from "./pages/user/MyBookings";
 import AdminLogin from "./pages/admin/AdminLogin";
 import AdminDashboard from "./pages/admin/AdminDashboard";
+import PrivateRoute from "./components/PrivateRoute";
+import RoleRoute from "./components/RoleRoute";
 
 const App = () => {
   return (
