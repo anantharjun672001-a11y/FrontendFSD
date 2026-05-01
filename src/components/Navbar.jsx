@@ -1,12 +1,15 @@
 import { useEffect, useState } from "react";
-import { Link, useLocation } from "react-router-dom";
+import { Link, useLocation, useNavigate } from "react-router-dom";
 
 const Navbar = () => {
   const [scrolled, setScrolled] = useState(false);
   const [menuOpen, setMenuOpen] = useState(false);
   const location = useLocation();
+  const navigate = useNavigate();
 
   const isLanding = location.pathname === "/landing";
+
+  const user = JSON.parse(localStorage.getItem("user"));
 
   useEffect(() => {
     const handleScroll = () => {
@@ -16,6 +19,12 @@ const Navbar = () => {
     window.addEventListener("scroll", handleScroll);
     return () => window.removeEventListener("scroll", handleScroll);
   }, []);
+
+  const logout = () => {
+    localStorage.removeItem("token");
+    localStorage.removeItem("user");
+    navigate("/login");
+  };
 
   return (
     <div
@@ -48,12 +57,22 @@ const Navbar = () => {
           </a>
         </div>
 
+        {/* Auth Buttons */}
         <div className="flex items-center gap-4">
-          <Link to="/login">
-            <button className="px-4 py-1.5 bg-black text-white rounded">
-              Login
+          {!user ? (
+            <Link to="/login">
+              <button className="px-4 py-1.5 bg-black text-white rounded">
+                Login
+              </button>
+            </Link>
+          ) : (
+            <button
+              onClick={logout}
+              className="px-4 py-1.5 bg-red-500 text-white rounded"
+            >
+              Logout
             </button>
-          </Link>
+          )}
         </div>
 
         {/* Mobile Hamburger */}

@@ -1,3 +1,4 @@
+import axios from "axios";
 import { useState } from "react";
 import { useNavigate } from "react-router-dom";
 
@@ -13,25 +14,21 @@ const Login = () => {
     setForm({ ...form, [e.target.name]: e.target.value });
   };
 
-  const handleSubmit = (e) => {
-    e.preventDefault();
 
-    // TEMP LOGIN (later backend connect pannuvom)
-    const dummyUser = {
-      email: form.email,
-      role: form.email === "admin@mail.com" ? "admin" : "user",
-    };
+  const handleSubmit = async (e) => {
+  e.preventDefault();
 
-    localStorage.setItem("token", "dummy-token");
-    localStorage.setItem("user", JSON.stringify(dummyUser));
+  const res = await axios.post("http://localhost:5000/api/auth/login", form);
 
-    // redirect
-    if (dummyUser.role === "admin") {
-      navigate("/admin/dashboard");
-    } else {
-      navigate("/");
-    }
-  };
+  localStorage.setItem("token", res.data.token);
+  localStorage.setItem("user", JSON.stringify(res.data.user));
+
+  if (res.data.user.role === "admin") {
+    navigate("/admin/dashboard");
+  } else {
+    navigate("/");
+  }
+};
 
   return (
     <div className="min-h-screen flex items-center justify-center">
