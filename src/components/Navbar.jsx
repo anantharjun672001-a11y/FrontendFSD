@@ -50,14 +50,16 @@ const Navbar = () => {
           <Link to="/outputs" className="hover:text-gray-300">
             Outputs
           </Link>
-          <Link to="/contact" className="hover:text-gray-300">
-            Contact
-          </Link>
+          {/* CONTACT → only for user or not logged in */}
+          {user?.role !== "admin" && (
+            <Link to="/contact" className="hover:text-gray-300">
+              Contact
+            </Link>
+          )}
 
           {/* USER MENU */}
           {user?.role === "user" && (
             <>
-              
               <Link to="/book" className="hover:text-gray-300">
                 BookShoot
               </Link>
@@ -128,9 +130,11 @@ const Navbar = () => {
           <Link to="/outputs" onClick={() => setMenuOpen(false)}>
             Outputs
           </Link>
-          <Link to="/contact" onClick={() => setMenuOpen(false)}>
-            Contact
-          </Link>
+          {user?.role !== "admin" && (
+            <Link to="/contact" onClick={() => setMenuOpen(false)}>
+              Contact
+            </Link>
+          )}
 
           {user?.role === "user" && (
             <>
