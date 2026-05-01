@@ -6,36 +6,40 @@ const MyBookings = () => {
 
   useEffect(() => {
     const fetchBookings = async () => {
-      const token = localStorage.getItem("token");
+      try {
+        const token = localStorage.getItem("token");
 
-      const res = await axios.get(
-        "http://localhost:3000/api/bookings/my",
-        {
+        const res = await axios.get("http://localhost:3000/api/bookings/my", {
           headers: {
             Authorization: `Bearer ${token}`,
           },
-        }
-      );
+        });
 
-      setData(res.data);
+        setData(res.data);
+      } catch (err) {
+        console.log("Error fetching bookings:", err);
+      }
     };
 
     fetchBookings();
   }, []);
-
   return (
-    <div>
-      <h2>My Bookings</h2>
+  <div className="p-6 text-white">
+    <h2 className="text-xl mb-4">My Bookings</h2>
 
-      {data.map((b) => (
+    {data.length === 0 ? (
+      <p>No bookings yet</p>
+    ) : (
+      data.map((b) => (
         <div key={b._id}>
           <p>{b.service}</p>
           <p>{b.date}</p>
           <p>{b.status}</p>
         </div>
-      ))}
-    </div>
-  );
+      ))
+    )}
+  </div>
+);
 };
 
 export default MyBookings;
