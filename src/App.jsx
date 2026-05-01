@@ -13,6 +13,8 @@ import AdminLogin from "./pages/admin/AdminLogin";
 import AdminDashboard from "./pages/admin/AdminDashboard";
 import PrivateRoute from "./components/PrivateRoute";
 import RoleRoute from "./components/RoleRoute";
+import ManageBookings from "./pages/admin/ManageBookings";
+import ManageServices from "./pages/admin/ManageServices";
 
 const App = () => {
   return (
@@ -59,6 +61,26 @@ const App = () => {
           <PrivateRoute>
             <RoleRoute allowedRoles={["admin"]}>
               <AdminDashboard />
+            </RoleRoute>
+          </PrivateRoute>
+        }
+      />
+      <Route
+        path="/admin/bookings"
+        element={
+          <PrivateRoute>
+            <RoleRoute allowedRoles={["admin"]}>
+              <ManageBookings />
+            </RoleRoute>
+          </PrivateRoute>
+        }
+      />
+      <Route
+        path="/admin/services"
+        element={
+          <PrivateRoute>
+            <RoleRoute allowedRoles={["admin"]}>
+              <ManageServices />
             </RoleRoute>
           </PrivateRoute>
         }

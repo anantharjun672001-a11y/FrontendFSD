@@ -38,32 +38,47 @@ const Navbar = () => {
       }`}
     >
       <div className="max-w-7xl mx-auto px-6 md:px-8 py-10 flex justify-between items-center">
-        
         {/* Logo */}
         <img src="/images/logo_white.png" className="w-24 md:w-28" />
 
         {/* Desktop Menu */}
         <div className="hidden md:flex gap-8 text-white font-medium items-center">
-
           {/* COMMON */}
-          <Link to="/landing" className="hover:text-gray-300">Home</Link>
-          <Link to="/outputs" className="hover:text-gray-300">Outputs</Link>
-          <Link to="/contact" className="hover:text-gray-300">Contact</Link>
+          <Link to="/landing" className="hover:text-gray-300">
+            Home
+          </Link>
+          <Link to="/outputs" className="hover:text-gray-300">
+            Outputs
+          </Link>
+          <Link to="/contact" className="hover:text-gray-300">
+            Contact
+          </Link>
 
           {/* USER MENU */}
           {user?.role === "user" && (
             <>
-              <Link to="/book" className="hover:text-gray-300">BookShoot</Link>
-              <Link to="/my-bookings" className="hover:text-gray-300">MyBookings</Link>
+              
+              <Link to="/book" className="hover:text-gray-300">
+                BookShoot
+              </Link>
+              <Link to="/my-bookings" className="hover:text-gray-300">
+                MyBookings
+              </Link>
             </>
           )}
 
           {/* ADMIN MENU */}
           {user?.role === "admin" && (
             <>
-              <Link to="/admin/dashboard" className="hover:text-gray-300">Dashboard</Link>
-              <Link to="/admin/bookings" className="hover:text-gray-300">ManageBookings</Link>
-              <Link to="/admin/services" className="hover:text-gray-300">ManageServices</Link>
+              <Link to="/admin/dashboard" className="hover:text-gray-300">
+                Dashboard
+              </Link>
+              <Link to="/admin/bookings" className="hover:text-gray-300">
+                ManageBookings
+              </Link>
+              <Link to="/admin/services" className="hover:text-gray-300">
+                ManageServices
+              </Link>
             </>
           )}
         </div>
@@ -72,12 +87,14 @@ const Navbar = () => {
         <div className="flex items-center gap-4">
           {!user ? (
             <Link to="/login">
-              <button className="px-5 py-2 rounded-xl text-white text-sm font-medium
+              <button
+                className="px-5 py-2 rounded-xl text-white text-sm font-medium
                 bg-gradient-to-r from-purple-500 via-pink-500 to-red-500
                 hover:from-red-500 hover:to-purple-500
                 shadow-md hover:shadow-xl
                 transition-all duration-300
-                transform hover:scale-105 active:scale-95">
+                transform hover:scale-105 active:scale-95"
+              >
                 Login
               </button>
             </Link>
@@ -105,23 +122,38 @@ const Navbar = () => {
       {/* Mobile Menu */}
       {menuOpen && (
         <div className="absolute top-full left-0 w-full bg-black text-white flex flex-col items-center gap-6 py-6 md:hidden shadow-lg">
-
-          <Link to="/landing" onClick={() => setMenuOpen(false)}>Home</Link>
-          <Link to="/outputs" onClick={() => setMenuOpen(false)}>Outputs</Link>
-          <Link to="/contact" onClick={() => setMenuOpen(false)}>Contact</Link>
+          <Link to="/landing" onClick={() => setMenuOpen(false)}>
+            Home
+          </Link>
+          <Link to="/outputs" onClick={() => setMenuOpen(false)}>
+            Outputs
+          </Link>
+          <Link to="/contact" onClick={() => setMenuOpen(false)}>
+            Contact
+          </Link>
 
           {user?.role === "user" && (
             <>
-              <Link to="/book" onClick={() => setMenuOpen(false)}>BookShoot</Link>
-              <Link to="/my-bookings" onClick={() => setMenuOpen(false)}>MyBookings</Link>
+              <Link to="/book" onClick={() => setMenuOpen(false)}>
+                BookShoot
+              </Link>
+              <Link to="/my-bookings" onClick={() => setMenuOpen(false)}>
+                MyBookings
+              </Link>
             </>
           )}
 
           {user?.role === "admin" && (
             <>
-              <Link to="/admin/dashboard" onClick={() => setMenuOpen(false)}>Dashboard</Link>
-              <Link to="/admin/bookings" onClick={() => setMenuOpen(false)}>ManageBookings</Link>
-              <Link to="/admin/services" onClick={() => setMenuOpen(false)}>ManageServices</Link>
+              <Link to="/admin/dashboard" onClick={() => setMenuOpen(false)}>
+                Dashboard
+              </Link>
+              <Link to="/admin/bookings" onClick={() => setMenuOpen(false)}>
+                ManageBookings
+              </Link>
+              <Link to="/admin/services" onClick={() => setMenuOpen(false)}>
+                ManageServices
+              </Link>
             </>
           )}
         </div>
