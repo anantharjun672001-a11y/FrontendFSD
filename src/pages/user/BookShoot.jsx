@@ -48,8 +48,10 @@ const BookShoot = () => {
         "http://localhost:3000/api/bookings",
         {
           service: selectedService.name,
+          price: selectedService.price,
           date,
         },
+
         {
           headers: {
             Authorization: `Bearer ${token}`,
