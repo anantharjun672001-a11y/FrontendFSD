@@ -15,10 +15,13 @@ import PrivateRoute from "./components/PrivateRoute";
 import RoleRoute from "./components/RoleRoute";
 import ManageBookings from "./pages/admin/ManageBookings";
 import ManageServices from "./pages/admin/ManageServices";
+import { ToastContainer } from "react-toastify";
+import "react-toastify/dist/ReactToastify.css";
 
 const App = () => {
   return (
     <BrowserRouter>
+    <ToastContainer position="top-right" autoClose={2000} />
       <Navbar />
       <Routes>
         {/* PUBLIC ROUTES */}
