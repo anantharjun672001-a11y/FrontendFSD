@@ -1,6 +1,6 @@
 import axios from "axios";
 import { useState } from "react";
-import { useNavigate } from "react-router-dom";
+import { useNavigate, Link } from "react-router-dom";
 
 const Login = () => {
   const navigate = useNavigate();
@@ -10,36 +10,53 @@ const Login = () => {
     password: "",
   });
 
+  const [loading, setLoading] = useState(false);
+
   const handleChange = (e) => {
     setForm({ ...form, [e.target.name]: e.target.value });
   };
 
-
   const handleSubmit = async (e) => {
-  e.preventDefault();
+    e.preventDefault();
 
-  const res = await axios.post("http://localhost:3000/api/auth/login", form);
+    try {
+      setLoading(true);
 
-  localStorage.setItem("token", res.data.token);
-  localStorage.setItem("user", JSON.stringify(res.data.user));
+      const res = await axios.post(
+        "http://localhost:3000/api/auth/login",
+        form
+      );
 
-  if (res.data.user.role === "admin") {
-    navigate("/admin/dashboard");
-  } else {
-    navigate("/");
-  }
-};
+      localStorage.setItem("token", res.data.token);
+      localStorage.setItem("user", JSON.stringify(res.data.user));
+
+      if (res.data.user.role === "admin") {
+        navigate("/admin/dashboard");
+      } else {
+        navigate("/");
+      }
+    } catch (err) {
+      alert("Invalid credentials");
+    } finally {
+      setLoading(false);
+    }
+  };
 
   return (
-    <div className="min-h-screen flex items-center justify-center">
-      <form onSubmit={handleSubmit} className="p-6 bg-white shadow rounded-lg w-80">
-        <h2 className="text-xl font-bold mb-4">Login</h2>
+    <div className="min-h-screen bg-[#0B0F19] flex items-center justify-center px-6">
+      <form
+        onSubmit={handleSubmit}
+        className="bg-[#121826] p-8 rounded-2xl shadow-xl w-full max-w-md"
+      >
+        <h2 className="text-3xl font-bold text-white text-center mb-6">
+          Welcome Back 👋
+        </h2>
 
         <input
           type="email"
           name="email"
           placeholder="Email"
-          className="w-full border p-2 mb-3"
+          className="w-full mb-4 p-3 rounded bg-[#1c2233] text-white outline-none"
           onChange={handleChange}
         />
 
@@ -47,13 +64,23 @@ const Login = () => {
           type="password"
           name="password"
           placeholder="Password"
-          className="w-full border p-2 mb-3"
+          className="w-full mb-6 p-3 rounded bg-[#1c2233] text-white outline-none"
           onChange={handleChange}
         />
 
-        <button className="w-full bg-black text-white py-2">
-          Login
+        <button
+          disabled={loading}
+          className="w-full py-3 rounded-xl bg-gradient-to-r from-purple-500 to-pink-500 hover:scale-105 transition"
+        >
+          {loading ? "Logging in..." : "Login"}
         </button>
+
+        <p className="text-gray-400 text-center mt-4">
+          Don’t have an account?{" "}
+          <Link to="/register" className="text-purple-400 hover:underline">
+            Register
+          </Link>
+        </p>
       </form>
     </div>
   );
