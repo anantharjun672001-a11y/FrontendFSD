@@ -1,6 +1,7 @@
 import axios from "axios";
 import { useState } from "react";
 import { useNavigate, Link } from "react-router-dom";
+import { toast } from "react-toastify";
 
 const Login = () => {
   const navigate = useNavigate();
@@ -29,6 +30,7 @@ const Login = () => {
 
       localStorage.setItem("token", res.data.token);
       localStorage.setItem("user", JSON.stringify(res.data.user));
+      toast.success("Login successful ");
 
       if (res.data.user.role === "admin") {
         navigate("/admin/dashboard");
@@ -36,7 +38,7 @@ const Login = () => {
         navigate("/");
       }
     } catch (err) {
-      alert("Invalid credentials");
+      toast.error("Invalid credentials ");
     } finally {
       setLoading(false);
     }
