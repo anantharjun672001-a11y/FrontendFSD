@@ -1,6 +1,7 @@
 import axios from "axios";
 import { useState } from "react";
 import { Link, useNavigate } from "react-router-dom";
+import { toast } from "react-toastify";
 
 const Register = () => {
   const navigate = useNavigate();
@@ -28,10 +29,10 @@ const Register = () => {
         form
       );
 
-      alert("Registered successfully!");
+      toast.success("Registered successfully ");
       navigate("/login");
     } catch (err) {
-      alert("Registration failed");
+      toast.error("Registration failed");
     } finally {
       setLoading(false);
     }
@@ -44,11 +45,12 @@ const Register = () => {
         className="bg-[#121826] p-8 rounded-2xl shadow-xl w-full max-w-md"
       >
         <h2 className="text-3xl font-bold text-white text-center mb-6">
-          Create Account 🚀
+          Create Account 
         </h2>
 
         <input
           name="name"
+          type="text"
           placeholder="Full Name"
           className="w-full mb-4 p-3 rounded bg-[#1c2233] text-white outline-none"
           onChange={handleChange}
@@ -56,6 +58,7 @@ const Register = () => {
 
         <input
           name="email"
+          type="email"
           placeholder="Email"
           className="w-full mb-4 p-3 rounded bg-[#1c2233] text-white outline-none"
           onChange={handleChange}
