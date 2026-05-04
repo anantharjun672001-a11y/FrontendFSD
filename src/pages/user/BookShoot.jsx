@@ -1,13 +1,17 @@
 import { useEffect, useState } from "react";
 import axios from "axios";
+import DatePicker from "react-datepicker";
+import "react-datepicker/dist/react-datepicker.css";
+import { toast } from "react-toastify";
 
 const BookShoot = () => {
   const [services, setServices] = useState([]);
   const [selectedServiceId, setSelectedServiceId] = useState("");
   const [selectedService, setSelectedService] = useState(null);
-  const [date, setDate] = useState("");
+  const [date, setDate] = useState(null);
+  const [bookedDates, setBookedDates] = useState([]);
 
-  // Fetch services
+  // Fetch services (UNCHANGED)
   useEffect(() => {
     const fetchServices = async () => {
       try {
@@ -23,7 +27,25 @@ const BookShoot = () => {
     fetchServices();
   }, []);
 
-  // Handle dropdown change
+  // NEW: Fetch booked dates
+  useEffect(() => {
+    const fetchBookedDates = async () => {
+      try {
+        const res = await axios.get(
+          "http://localhost:3000/api/bookings/booked-dates"
+        );
+
+        const disabledDates = res.data.map((d) => new Date(d));
+        setBookedDates(disabledDates);
+      } catch (err) {
+        console.log("Booked dates error:", err);
+      }
+    };
+
+    fetchBookedDates();
+  }, []);
+
+  // Handle dropdown change (UNCHANGED)
   const handleServiceChange = (e) => {
     const id = e.target.value;
     setSelectedServiceId(id);
@@ -32,12 +54,12 @@ const BookShoot = () => {
     setSelectedService(service);
   };
 
-  //  Submit
+  // Submit (LOGIC SAME, only date format change)
   const handleSubmit = async (e) => {
     e.preventDefault();
 
     if (!selectedService || !date) {
-      alert("Please select service and date");
+      toast.error("Please select service and date");
       return;
     }
 
@@ -49,9 +71,8 @@ const BookShoot = () => {
         {
           service: selectedService.name,
           price: selectedService.price,
-          date,
+          date: date.toISOString(), 
         },
-
         {
           headers: {
             Authorization: `Bearer ${token}`,
@@ -59,9 +80,10 @@ const BookShoot = () => {
         }
       );
 
-      alert("Booking created!");
+      toast.success("Booking created ");
     } catch (err) {
       console.log("Booking error:", err);
+      toast.error("Booking failed ");
     }
   };
 
@@ -96,11 +118,13 @@ const BookShoot = () => {
           </div>
         )}
 
-        {/* Date */}
-        <input
-          type="date"
-          value={date}
-          onChange={(e) => setDate(e.target.value)}
+        {/* DATE PICKER (UPDATED) */}
+        <DatePicker
+          selected={date}
+          onChange={(d) => setDate(d)}
+          excludeDates={bookedDates}
+          minDate={new Date()}
+          placeholderText="Select available date"
           className="w-full mb-6 p-3 rounded bg-[#1c2233] text-white outline-none"
         />
 

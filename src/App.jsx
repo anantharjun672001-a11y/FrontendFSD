@@ -17,6 +17,7 @@ import ManageBookings from "./pages/admin/ManageBookings";
 import ManageServices from "./pages/admin/ManageServices";
 import { ToastContainer } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
+import "react-datepicker/dist/react-datepicker.css";
 
 const App = () => {
   return (
