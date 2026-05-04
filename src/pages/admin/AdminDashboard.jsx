@@ -25,7 +25,7 @@ const AdminDashboard = () => {
       try {
         const token = localStorage.getItem("token");
 
-        const res = await axios.get("http://backendfsd.onrender.com/api/bookings", {
+        const res = await axios.get("https://backendfsd.onrender.com/api/bookings", {
           headers: {
             Authorization: `Bearer ${token}`,
           },
