@@ -11,13 +11,11 @@ const BookShoot = () => {
   const [date, setDate] = useState(null);
   const [bookedDates, setBookedDates] = useState([]);
 
-  // Fetch services (UNCHANGED)
+  // Fetch services
   useEffect(() => {
     const fetchServices = async () => {
       try {
-        const res = await axios.get(
-          "http://localhost:3000/api/services"
-        );
+        const res = await axios.get("http://localhost:3000/api/services");
         setServices(res.data);
       } catch (err) {
         console.log("Service fetch error:", err);
@@ -27,25 +25,25 @@ const BookShoot = () => {
     fetchServices();
   }, []);
 
-  // NEW: Fetch booked dates
+  // Fetch booked dates
+  const fetchBookedDates = async () => {
+    try {
+      const res = await axios.get(
+        "http://localhost:3000/api/bookings/booked-dates"
+      );
+
+      const disabledDates = res.data.map((d) => new Date(d));
+      setBookedDates(disabledDates);
+    } catch (err) {
+      console.log("Booked dates error:", err);
+    }
+  };
+
   useEffect(() => {
-    const fetchBookedDates = async () => {
-      try {
-        const res = await axios.get(
-          "http://localhost:3000/api/bookings/booked-dates"
-        );
-
-        const disabledDates = res.data.map((d) => new Date(d));
-        setBookedDates(disabledDates);
-      } catch (err) {
-        console.log("Booked dates error:", err);
-      }
-    };
-
     fetchBookedDates();
   }, []);
 
-  // Handle dropdown change (UNCHANGED)
+  // Handle service select
   const handleServiceChange = (e) => {
     const id = e.target.value;
     setSelectedServiceId(id);
@@ -54,7 +52,7 @@ const BookShoot = () => {
     setSelectedService(service);
   };
 
-  // Submit (LOGIC SAME, only date format change)
+  // Submit
   const handleSubmit = async (e) => {
     e.preventDefault();
 
@@ -71,7 +69,7 @@ const BookShoot = () => {
         {
           service: selectedService.name,
           price: selectedService.price,
-          date: date.toISOString(), 
+          date: date.toISOString(),
         },
         {
           headers: {
@@ -80,7 +78,16 @@ const BookShoot = () => {
         }
       );
 
-      toast.success("Booking created ");
+      toast.success("Booking created successfully!");
+
+      // RESET FORM 
+      setSelectedServiceId("");
+      setSelectedService(null);
+      setDate(null);
+
+      // Refresh booked dates (optional but correct)
+      fetchBookedDates();
+
     } catch (err) {
       console.log("Booking error:", err);
       toast.error("Booking failed ");
@@ -97,7 +104,7 @@ const BookShoot = () => {
           Book a Shoot
         </h2>
 
-        {/* Service Dropdown */}
+        {/* Service */}
         <select
           value={selectedServiceId}
           onChange={handleServiceChange}
@@ -111,14 +118,14 @@ const BookShoot = () => {
           ))}
         </select>
 
-        {/* Price Display */}
+        {/* Price */}
         {selectedService && (
           <div className="mb-4 text-center text-lg text-green-400 font-semibold">
             Price: ₹{selectedService.price}
           </div>
         )}
 
-        {/* DATE PICKER (UPDATED) */}
+        {/* Date */}
         <DatePicker
           selected={date}
           onChange={(d) => setDate(d)}
