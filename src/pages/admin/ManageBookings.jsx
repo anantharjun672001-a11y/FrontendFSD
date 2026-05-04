@@ -1,5 +1,6 @@
 import { useEffect, useState } from "react";
 import axios from "axios";
+import { toast } from "react-toastify";
 
 const ManageBookings = () => {
   const [data, setData] = useState([]);
@@ -8,7 +9,6 @@ const ManageBookings = () => {
   const [currentPage, setCurrentPage] = useState(1);
 
   const itemsPerPage = 6; 
-
   const token = localStorage.getItem("token");
 
   const fetchData = async () => {
@@ -30,16 +30,30 @@ const ManageBookings = () => {
     fetchData();
   }, []);
 
+  // UPDATED FUNCTION (instant UI + toast)
   const updateStatus = async (id, status) => {
-    await axios.put(
-      `https://backendfsd.onrender.com/api/bookings/${id}`,
-      { status },
-      {
-        headers: { Authorization: `Bearer ${token}` },
-      }
-    );
+    try {
+      await axios.put(
+        `https://backendfsd.onrender.com/api/bookings/${id}`,
+        { status },
+        {
+          headers: { Authorization: `Bearer ${token}` },
+        }
+      );
 
-    fetchData();
+      // instant UI update (no refresh feel)
+      setData((prev) =>
+        prev.map((item) =>
+          item._id === id ? { ...item, status } : item
+        )
+      );
+
+      // toast message
+      toast.success(`Booking ${status} successfully`);
+    } catch (err) {
+      console.error(err);
+      toast.error("Something went wrong");
+    }
   };
 
   // FILTER + SEARCH
@@ -51,9 +65,8 @@ const ManageBookings = () => {
       b.service.toLowerCase().includes(search.toLowerCase())
     );
 
-  // PAGINATION LOGIC
+  // PAGINATION
   const totalPages = Math.ceil(filteredData.length / itemsPerPage);
-
   const startIndex = (currentPage - 1) * itemsPerPage;
   const currentData = filteredData.slice(
     startIndex,
