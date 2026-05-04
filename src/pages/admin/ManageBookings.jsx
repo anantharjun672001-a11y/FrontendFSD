@@ -61,7 +61,7 @@ const ManageBookings = () => {
   );
 
   return (
-    <div className="min-h-screen bg-[#0B0F19] text-white px-6 py-24">
+    <div className="min-h-screen bg-[#0B0F19] text-white px-6 py-28">
       
       <h2 className="text-3xl font-bold text-center mb-10">
         All Bookings
@@ -75,7 +75,7 @@ const ManageBookings = () => {
           value={search}
           onChange={(e) => {
             setSearch(e.target.value);
-            setCurrentPage(1); // reset page
+            setCurrentPage(1); 
           }}
           className="w-full max-w-md p-3 rounded bg-[#121826] border border-gray-600 outline-none"
         />
@@ -83,7 +83,7 @@ const ManageBookings = () => {
 
       {/* FILTER */}
       <div className="flex justify-center gap-4 mb-10 flex-wrap">
-        {["all", "approved", "pending", "cancelled"].map((f) => (
+        {["all", "approved", "rejected", "cancelled"].map((f) => (
           <button
             key={f}
             onClick={() => {
