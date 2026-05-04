@@ -39,6 +39,7 @@ const ManageBookings = () => {
         item._id === id ? { ...item, status } : item
       )
     );
+    toast.success(`Booking ${status} successfully`);
 
     // 🔥 2. API call
     await axios.put(
@@ -49,7 +50,7 @@ const ManageBookings = () => {
       }
     );
 
-    toast.success(`Booking ${status} successfully`);
+    
 
     // 3. Sync again (final consistency)
     fetchData();
