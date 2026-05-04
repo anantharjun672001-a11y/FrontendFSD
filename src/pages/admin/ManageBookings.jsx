@@ -32,7 +32,7 @@ const ManageBookings = () => {
 
   const updateStatus = async (id, status) => {
     await axios.put(
-      `hhttps://backendfsd.onrender.com/api/bookings/${id}`,
+      `https://backendfsd.onrender.com/api/bookings/${id}`,
       { status },
       {
         headers: { Authorization: `Bearer ${token}` },
