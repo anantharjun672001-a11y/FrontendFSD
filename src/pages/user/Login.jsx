@@ -24,7 +24,7 @@ const Login = () => {
       setLoading(true);
 
       const res = await axios.post(
-        "http://backendfsd.onrender.com/api/auth/login",
+        "https://backendfsd.onrender.com/api/auth/login",
         form
       );
 

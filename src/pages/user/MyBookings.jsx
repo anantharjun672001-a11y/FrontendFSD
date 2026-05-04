@@ -10,7 +10,7 @@ const MyBookings = () => {
       const token = localStorage.getItem("token");
 
       const res = await axios.get(
-        "http://backendfsd.onrender.com/api/bookings/my",
+        "https://backendfsd.onrender.com/api/bookings/my",
         {
           headers: {
             Authorization: `Bearer ${token}`,
@@ -36,7 +36,7 @@ const MyBookings = () => {
       const token = localStorage.getItem("token");
 
       const { data: order } = await axios.post(
-        "http://backendfsd.onrender.com/api/payment/create-order",
+        "https://backendfsd.onrender.com/api/payment/create-order",
         { amount: booking.price },
         {
           headers: {
@@ -55,7 +55,7 @@ const MyBookings = () => {
 
         handler: async function () {
           await axios.put(
-            `http://backendfsd.onrender.com/api/bookings/payment/${booking._id}`,
+            `https://backendfsd.onrender.com/api/bookings/payment/${booking._id}`,
             {},
             {
               headers: {
@@ -88,7 +88,7 @@ const MyBookings = () => {
       const token = localStorage.getItem("token");
 
       await axios.put(
-        `http://backendfsd.onrender.com/api/bookings/cancel/${id}`,
+        `https://backendfsd.onrender.com/api/bookings/cancel/${id}`,
         {},
         {
           headers: {

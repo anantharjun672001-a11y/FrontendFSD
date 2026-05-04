@@ -25,7 +25,7 @@ const Register = () => {
       setLoading(true);
 
       await axios.post(
-        "http://backendfsd.onrender.com/api/auth/register",
+        "https://backendfsd.onrender.com/api/auth/register",
         form
       );
 
