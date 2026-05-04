@@ -20,7 +20,6 @@ import BookShoot from "./pages/user/BookShoot";
 import MyBookings from "./pages/user/MyBookings";
 
 // Admin Pages
-import AdminLogin from "./pages/admin/AdminLogin";
 import AdminDashboard from "./pages/admin/AdminDashboard";
 import ManageBookings from "./pages/admin/ManageBookings";
 import ManageServices from "./pages/admin/ManageServices";
@@ -72,7 +71,7 @@ function App() {
         />
 
         {/* ADMIN */}
-        <Route path="/admin/login" element={<AdminLogin />} />
+        
 
         <Route
           path="/admin/dashboard"
