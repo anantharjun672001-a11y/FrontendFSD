@@ -46,32 +46,52 @@ const MyBookings = () => {
       );
 
       const options = {
-        key: "rzp_test_SL4hcemGC7pjEC",
-        amount: order.amount,
-        currency: "INR",
-        name: "Stuart Photography",
-        description: booking.service,
-        order_id: order.id,
+  key: "rzp_test_SL4hcemGC7pjEC",
+  amount: order.amount,
+  currency: "INR",
+  name: "Stuart Photography",
+  description: booking.service,
+  order_id: order.id,
 
-        handler: async function () {
-          await axios.put(
-            `https://backendfsd.onrender.com/api/bookings/payment/${booking._id}`,
-            {},
-            {
-              headers: {
-                Authorization: `Bearer ${token}`,
-              },
-            }
-          );
+  handler: async function () {
+    try {
+      // 🔥 1. instant UI update
+      setData((prev) =>
+        prev.map((item) =>
+          item._id === booking._id
+            ? { ...item, paymentStatus: "paid" }
+            : item
+        )
+      );
 
-          toast.success("Payment successful");
+      // 🔥 2. toast
+      toast.success("Payment successful 💸");
 
-          fetchBookings();
-        },
-      };
+      // 🔥 3. backend update
+      await axios.put(
+        `https://backendfsd.onrender.com/api/bookings/payment/${booking._id}`,
+        {},
+        {
+          headers: {
+            Authorization: `Bearer ${token}`,
+          },
+        }
+      );
 
-      const rzp = new window.Razorpay(options);
-      rzp.open();
+      // 🔥 4. sync
+      fetchBookings();
+
+    } catch (err) {
+      toast.error("Payment update failed");
+      fetchBookings();
+    }
+  }
+};
+
+// 🔥 THIS WAS MISSING
+const rzp = new window.Razorpay(options);
+rzp.open();
+
     } catch (err) {
       console.log("Payment error:", err);
       toast.error("Payment failed");
