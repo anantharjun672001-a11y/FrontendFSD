@@ -32,29 +32,36 @@ const ManageBookings = () => {
 
   // UPDATED FUNCTION (instant UI + toast)
   const updateStatus = async (id, status) => {
-    try {
-      await axios.put(
-        `https://backendfsd.onrender.com/api/bookings/${id}`,
-        { status },
-        {
-          headers: { Authorization: `Bearer ${token}` },
-        }
-      );
+  try {
+    // 🔥 1. Instant UI update (optimistic)
+    setData((prev) =>
+      prev.map((item) =>
+        item._id === id ? { ...item, status } : item
+      )
+    );
 
-      // instant UI update (no refresh feel)
-      setData((prev) =>
-        prev.map((item) =>
-          item._id === id ? { ...item, status } : item
-        )
-      );
+    // 🔥 2. API call
+    await axios.put(
+      `https://backendfsd.onrender.com/api/bookings/${id}`,
+      { status },
+      {
+        headers: { Authorization: `Bearer ${token}` },
+      }
+    );
 
-      // toast message
-      toast.success(`Booking ${status} successfully`);
-    } catch (err) {
-      console.error(err);
-      toast.error("Something went wrong");
-    }
-  };
+    toast.success(`Booking ${status} successfully`);
+
+    // 3. Sync again (final consistency)
+    fetchData();
+
+  } catch (err) {
+    console.error(err);
+    toast.error("Update failed");
+
+    // rollback (important)
+    fetchData();
+  }
+};
 
   // FILTER + SEARCH
   const filteredData = data
