@@ -1,5 +1,6 @@
 import { useEffect, useState } from "react";
 import axios from "axios";
+import { toast } from "react-toastify";
 
 const MyBookings = () => {
   const [data, setData] = useState([]);
@@ -18,26 +19,25 @@ const MyBookings = () => {
       );
 
       setData(res.data);
+      
     } catch (err) {
       console.log(err);
     }
   };
 
   useEffect(() => {
+    
     fetchBookings();
   }, []);
 
-  //  PAYMENT FUNCTION
+  // PAYMENT
   const handlePayment = async (booking) => {
     try {
       const token = localStorage.getItem("token");
 
-      // Step 1: Create Razorpay order
-      const res = await axios.post(
+      const { data: order } = await axios.post(
         "http://localhost:3000/api/payment/create-order",
-        {
-          amount: booking.price,
-        },
+        { amount: booking.price },
         {
           headers: {
             Authorization: `Bearer ${token}`,
@@ -46,24 +46,25 @@ const MyBookings = () => {
       );
 
       const options = {
-        key: "rzp_test_SL4hcemGC7pjEC", 
-        amount: res.data.amount,
+        key: "rzp_test_SL4hcemGC7pjEC",
+        amount: order.amount,
         currency: "INR",
-        order_id: res.data.id,
+        name: "Stuart Photography",
+        description: booking.service,
+        order_id: order.id,
 
         handler: async function () {
-          alert("Payment Successful!");
-
-          // Step 2: Update payment status
           await axios.put(
-            `http://localhost:3000/api/bookings/${booking._id}`,
-            { paymentStatus: "paid" },
+            `http://localhost:3000/api/bookings/payment/${booking._id}`,
+            {},
             {
               headers: {
                 Authorization: `Bearer ${token}`,
               },
             }
           );
+
+          toast.success("Payment successful");
 
           fetchBookings();
         },
@@ -73,11 +74,40 @@ const MyBookings = () => {
       rzp.open();
     } catch (err) {
       console.log("Payment error:", err);
+      toast.error("Payment failed");
+    }
+  };
+  
+
+  // CANCEL BOOKING
+  const handleCancel = async (id) => {
+    const confirm = window.confirm("Cancel this booking?");
+    if (!confirm) return;
+
+    try {
+      const token = localStorage.getItem("token");
+
+      await axios.put(
+        `http://localhost:3000/api/bookings/cancel/${id}`,
+        {},
+        {
+          headers: {
+            Authorization: `Bearer ${token}`,
+          },
+        }
+      );
+
+      // remove from UI instantly
+      setData((prev) => prev.filter((b) => b._id !== id));
+      toast.success("Booking cancelled");
+    } catch (err) {
+      console.log("Cancel error:", err);
+      toast.error("Failed to cancel booking");
     }
   };
 
   return (
-    <div className="min-h-screen bg-[#0B0F19] text-white px-6 py-24">
+    <div className="min-h-screen bg-[#0B0F19] text-white px-6 py-28">
       <h2 className="text-3xl font-bold text-center mb-10">
         My Bookings
       </h2>
@@ -91,8 +121,19 @@ const MyBookings = () => {
           {data.map((b) => (
             <div
               key={b._id}
-              className="bg-[#121826] p-5 rounded-2xl shadow-lg border border-gray-700"
+              className="relative bg-[#121826] p-5 rounded-2xl shadow-lg border border-gray-700 transition transform hover:scale-105 hover:shadow-2xl"
             >
+              {/* CANCEL BUTTON (TOP RIGHT) */}
+              {(b.paymentStatus !== "paid" &&
+                b.status !== "rejected") && (
+                <button
+                  onClick={() => handleCancel(b._id)}
+                  className="absolute top-3 right-3 text-red-400 hover:text-red-600 text-lg"
+                >
+                  ✕
+                </button>
+              )}
+
               <h3 className="text-xl font-semibold mb-2">
                 {b.service}
               </h3>
@@ -108,16 +149,18 @@ const MyBookings = () => {
                     ? "bg-green-500"
                     : b.status === "rejected"
                     ? "bg-red-500"
+                    : b.status === "cancelled"
+                    ? "bg-gray-500"
                     : "bg-yellow-500"
                 }`}
               >
                 {b.status}
               </span>
 
-              {/* PAYMENT STATUS */}
+              {/* PAYMENT */}
               {b.paymentStatus === "paid" && (
                 <p className="mt-3 text-green-400 font-semibold">
-                  Paid ✅
+                  Paid 
                 </p>
               )}
 
