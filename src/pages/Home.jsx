@@ -46,9 +46,9 @@ const Home = () => {
         transition={{ delay: 1.2 }}
         className="flex gap-4 mt-10"
       >
-        <img src="/images/b1.jpeg" className="w-24 h-24 object-cover rounded-lg hover:scale-110 transition" />
-        <img src="/images/b2.jpeg" className="w-24 h-24 object-cover rounded-lg hover:scale-110 transition" />
-        <img src="/images/d1.jpeg" className="w-24 h-24 object-cover rounded-lg hover:scale-110 transition" />
+        <img src="/images/girl4.jpeg" className="w-24 h-24 object-cover rounded-lg hover:scale-110 transition" />
+        <img src="/images/girl12.jpeg" className="w-24 h-24 object-cover rounded-lg hover:scale-110 transition" />
+        <img src="/images/girl20.jpeg" className="w-24 h-24 object-cover rounded-lg hover:scale-110 transition" />
       </motion.div>
 
     </div>
