@@ -18,6 +18,7 @@ import ManageServices from "./pages/admin/ManageServices";
 import { ToastContainer } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
 import "react-datepicker/dist/react-datepicker.css";
+import Outputs from "./pages/Outputs";
 
 const App = () => {
   return (
@@ -30,6 +31,7 @@ const App = () => {
         <Route path="/landing" element={<Landing />} />
         <Route path="/about" element={<AboutStudio />} />
         <Route path="/contact" element={<Contact />} />
+        <Route path="/outputs" element={<Outputs />} />
 
         {/* USER AUTH ROUTES */}
 
