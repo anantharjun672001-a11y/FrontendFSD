@@ -13,7 +13,7 @@ const ManageBookings = () => {
 
   const fetchData = async () => {
     const res = await axios.get(
-      "http://localhost:3000/api/bookings",
+      "http://backendfsd.onrender.com/api/bookings",
       {
         headers: { Authorization: `Bearer ${token}` },
       }
@@ -32,7 +32,7 @@ const ManageBookings = () => {
 
   const updateStatus = async (id, status) => {
     await axios.put(
-      `http://localhost:3000/api/bookings/${id}`,
+      `http://backendfsd.onrender.com/api/bookings/${id}`,
       { status },
       {
         headers: { Authorization: `Bearer ${token}` },

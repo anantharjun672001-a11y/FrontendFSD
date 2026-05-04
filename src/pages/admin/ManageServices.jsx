@@ -10,7 +10,7 @@ const ManageServices = () => {
   const token = localStorage.getItem("token");
 
   const fetchServices = async () => {
-    const res = await axios.get("http://localhost:3000/api/services");
+    const res = await axios.get("http://backendfsd.onrender.com/api/services");
     setServices(res.data);
   };
 
@@ -29,7 +29,7 @@ const ManageServices = () => {
       if (editId) {
         // UPDATE
         await axios.put(
-          `http://localhost:3000/api/services/${editId}`,
+          `http://backendfsd.onrender.com/api/services/${editId}`,
           form,
           {
             headers: { Authorization: `Bearer ${token}` },
@@ -40,7 +40,7 @@ const ManageServices = () => {
       } else {
         // ADD
         await axios.post(
-          "http://localhost:3000/api/services",
+          "http://backendfsd.onrender.com/api/services",
           form,
           {
             headers: { Authorization: `Bearer ${token}` },
@@ -61,7 +61,7 @@ const ManageServices = () => {
     if (!window.confirm("Delete this service?")) return;
 
     await axios.delete(
-      `http://localhost:3000/api/services/${id}`,
+      `http://backendfsd.onrender.com/api/services/${id}`,
       {
         headers: { Authorization: `Bearer ${token}` },
       }

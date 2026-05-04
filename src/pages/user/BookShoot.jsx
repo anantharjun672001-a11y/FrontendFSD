@@ -15,7 +15,7 @@ const BookShoot = () => {
   useEffect(() => {
     const fetchServices = async () => {
       try {
-        const res = await axios.get("http://localhost:3000/api/services");
+        const res = await axios.get("http://backendfsd.onrender.com/api/services");
         setServices(res.data);
       } catch (err) {
         console.log("Service fetch error:", err);
@@ -29,7 +29,7 @@ const BookShoot = () => {
   const fetchBookedDates = async () => {
     try {
       const res = await axios.get(
-        "http://localhost:3000/api/bookings/booked-dates"
+        "http://backendfsd.onrender.com/api/bookings/booked-dates"
       );
 
       const disabledDates = res.data.map((d) => new Date(d));
@@ -65,7 +65,7 @@ const BookShoot = () => {
       const token = localStorage.getItem("token");
 
       await axios.post(
-        "http://localhost:3000/api/bookings",
+        "http://backendfsd.onrender.com/api/bookings",
         {
           service: selectedService.name,
           price: selectedService.price,

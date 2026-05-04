@@ -24,7 +24,7 @@ const Login = () => {
       setLoading(true);
 
       const res = await axios.post(
-        "http://localhost:3000/api/auth/login",
+        "http://backendfsd.onrender.com/api/auth/login",
         form
       );
 
